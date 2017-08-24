@@ -9,15 +9,18 @@ import App from './components/app';
 import Signin from './components/auth/signin';
 import Signout from './components/auth/signout';
 import Signup from './components/auth/signup';
-import Feature from './components/feature';
+import createSurvey from './components/survey/create-survey';
+import showSurvey from './components/survey/show-survey';
 import RequireAuth from './components/auth/require-auth';
+import Home from './components/home';
+
 import reducers from './reducers';
 import { AUTH_USER } from './actions/types';
 
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
 const store = createStoreWithMiddleware(reducers);
 
-const token = localStorage.getItem('token');
+const token = localStorage.getItem('x-auth');
 
 // If we have a token, consider user authenticated
 if (token) {
@@ -29,11 +32,13 @@ ReactDOM.render(
   <Provider store={store}>
     <Router history={browserHistory}>
       <Route path='/' component={App}>
-        <Route path='/signin' component={Signin} />
-        <Route path='/signout' component={Signout} />
-        <Route path='/signup' component={Signup} />
-        <Route path='/feature' component={RequireAuth(Feature)} />
+        <IndexRoute component={Home} />
+        <Route path='signin' component={Signin} />
+        <Route path='signout' component={Signout} />
+        <Route path='signup' component={Signup} />
+        <Route path='create-survey' component={RequireAuth(createSurvey)} />
+        <Route path='survey/:id' component={showSurvey} />
       </Route>
     </Router>
   </Provider>
-  , document.querySelector('.container'));
+  , document.getElementById('container'));

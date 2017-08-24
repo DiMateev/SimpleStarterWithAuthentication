@@ -1,17 +1,71 @@
 import React from 'react';
 import { reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';
+import styled from 'styled-components';
 
 import * as actions from '../../actions';
 
+const Form = styled.form`
+  width: 60vw;
+  padding: 25px 20px;
+  margin: 20px auto;
+  background-color: rgb(230, 230, 230);
+  box-shadow: 1px 2px 4px grey;
+
+  @media (max-width: 767px) {
+		width: 95vw;
+	}
+
+  > h1 { 
+    font-size: 1.8em;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  > button {
+    width: 30%;
+    margin: 10px 0 10px 70%;
+
+    @media (max-width: 767px) {
+      width: 100%;
+      margin: 10px 0;
+    }
+  }
+`
+
+const Fieldset = styled.fieldset`
+  > label { 
+    display: inline-block; 
+    width: 20%; 
+  }
+
+  > div { 
+    display: inline-block; 
+    position: relative;
+    width: 80%; 
+    margin-bottom: 10px;
+
+    > span {
+      position: absolute;
+      top: 0;
+      right: 5px;
+      font-size: 0.8em;
+    }
+
+    @media (max-width: 767px) {
+      width: 100%;
+    }
+  }
+`
+
 const renderField = ({ input, label, type, meta: { touched, error } }) => (
-  <fieldset className='form-group'>
+  <Fieldset>
     <label>{label}</label>
     <div>
       <input {...input} type={type} className='form-control' />
       {touched && error && <span className='text-danger'>{error}</span>}
     </div>
-  </fieldset>
+  </Fieldset>
 );
 
 class Signup extends React.Component {
@@ -34,13 +88,14 @@ class Signup extends React.Component {
     const { handleSubmit } = this.props;
 
     return (
-      <form onSubmit={ handleSubmit(this.handleFormSubmit.bind(this)) }>
+      <Form onSubmit={ handleSubmit(this.handleFormSubmit.bind(this)) }>
+        <h1>Sign Up</h1>
         <Field type='text' name='email' component={renderField} label='Email:' />
         <Field type='password' name='password' component={renderField} label='Password:' />
         <Field type='password' name='password_confirm' component={renderField} label='Confirm Password:' />
         {this.renderAlert()}
         <button type='submit' className='btn btn-primary'>Sign Up</button>
-      </form>
+      </Form>
     );
   }
 }

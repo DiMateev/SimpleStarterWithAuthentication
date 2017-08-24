@@ -1,35 +1,67 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import styled from 'styled-components';
+
+const HeaderBrand = styled.div`
+  text-align: center;
+  background-color: rgb(120, 207, 255);
+  padding: 15px 0;
+  color: white;
+
+  > h1 {
+    font-family: 'monospace';
+    margin: 0;
+  }
+`
+const HeaderLink = styled.li`
+  display: inline-block;
+  margin: 0 15px;
+
+  > a {
+    color: grey;
+
+    :hover {
+      color: black;
+    }
+  }
+
+  ${props => props.right && 'float: right'}
+`
 
 class Header extends React.Component {
 
   renderLinks() {
     if (this.props.authenticated) {
       return (
-        <li className='nav-item'>
+        <HeaderLink key={2} right>
           <Link to='/signout' className='nav-link'>Sign Out</Link>
-        </li>
+        </HeaderLink>
       );
     } else {
       return [
-        <li className='nav-item' key={1}>
+        <HeaderLink key={2} right>
           <Link to='/signin' className='nav-link'>Sign In</Link>
-        </li>,
-        <li className='nav-item' key={2}>
+        </HeaderLink>,
+        <HeaderLink key={3} right>
           <Link to='/signup' className='nav-link'>Sign Up</Link>
-        </li>   
+        </HeaderLink>   
       ];
     }
   }
 
   render() {
     return (
-      <nav className='navbar navbar-light'>
+      <nav>
         <ul className='nav navbar-nav'>
-          <Link to='/' className='navbar-brand'>Redux Auth</Link>
+          <HeaderLink key={1}>
+            <Link to='/' className='nav-link'>Home</Link>
+          </HeaderLink>
           {this.renderLinks()}
         </ul>
+        <HeaderBrand>
+          <h1>The Voting App</h1>
+        </HeaderBrand>
       </nav>
     );
   }
